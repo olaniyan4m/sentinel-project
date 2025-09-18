@@ -1,0 +1,65 @@
+{
+  "evidence_collection": {
+    "ip_investigation": {
+      "tools": [
+        "whois",
+        "dns_lookup",
+        "port_scan",
+        "geolocation"
+      ],
+      "sources": [
+        "abuseipdb",
+        "virustotal",
+        "shodan"
+      ]
+    },
+    "domain_investigation": {
+      "tools": [
+        "whois",
+        "dns_records",
+        "ssl_certificates",
+        "subdomain_enumeration"
+      ],
+      "sources": [
+        "virustotal",
+        "shodan",
+        "censys"
+      ]
+    },
+    "email_investigation": {
+      "tools": [
+        "email_validation",
+        "breach_check",
+        "social_media_search"
+      ],
+      "sources": [
+        "haveibeenpwned",
+        "social_media_apis"
+      ]
+    }
+  },
+  "automation_rules": [
+    {
+      "trigger": "new_evidence_upload",
+      "action": "run_osint_analysis",
+      "parameters": [
+        "ip_address",
+        "domain",
+        "email"
+      ]
+    },
+    {
+      "trigger": "high_severity_threat",
+      "action": "deep_osint_investigation",
+      "parameters": [
+        "all_available_data"
+      ]
+    }
+  ],
+  "reporting": {
+    "format": "structured_json",
+    "include_sources": true,
+    "confidence_scoring": true,
+    "automated_analysis": true
+  }
+}

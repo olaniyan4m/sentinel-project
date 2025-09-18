@@ -1,0 +1,3 @@
+id,uploader_id,evidence_hash,kind,lat,lon,timestamp,blob_pointer
+e1,device-abc,sha256:aaa111,anpr,-26.2041,28.0473,2025-05-01T08:12:00Z,s3://bucket/e1.enc
+e2,device-xyz,sha256:bbb222,gunshot_event,-26.2050,28.0480,2025-05-01T08:13:12Z,s3://bucket/e2.enc

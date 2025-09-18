@@ -1,0 +1,27 @@
+alert_rules:
+- action: immediate_alert
+  condition: severity_score > 0.8
+  name: high_severity_threat
+- action: escalate_to_investigators
+  condition: correlation_count > 3
+  name: multiple_correlations
+correlation_rules:
+- distance_threshold: 10_km
+  name: cyber_physical_correlation
+  threshold: 0.7
+  time_window: 24_hours
+- distance_threshold: 5_km
+  name: fraud_vehicle_correlation
+  threshold: 0.8
+  time_window: 6_hours
+visualization:
+  map_center:
+  - -30.0
+  - 25.0
+  threat_layers:
+  - cyber_threats
+  - physical_crimes
+  - vehicle_incidents
+  - cit_robberies
+  - cyber_fraud
+  zoom_level: 6

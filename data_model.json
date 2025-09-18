@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "Evidence": {
+      "fields": {
+        "id": "uuid",
+        "uploader_id": "string",
+        "evidence_hash": "sha256",
+        "blob_pointer": "s3://bucket/key (encrypted)",
+        "kind": "enum",
+        "location": {
+          "lat": "float",
+          "lon": "float",
+          "accuracy_m": "float"
+        },
+        "timestamp": "datetime",
+        "metadata": "json",
+        "signature": "string",
+        "ledger_tx": "string",
+        "ingest_ts": "datetime",
+        "retention_policy": "string"
+      },
+      "notes": "Store minimal PII; raw blobs are encrypted and access-controlled."
+    },
+    "Device": {
+      "fields": {
+        "device_id": "string",
+        "owner_org": "string",
+        "public_key": "string",
+        "last_seen": "datetime",
+        "status": "active|disabled|tampered"
+      }
+    },
+    "PlateRecord": {
+      "fields": {
+        "plate_hash": "sha256",
+        "plain_plate_hint": "optional masked",
+        "evidence_ids": "list"
+      }
+    },
+    "Case": {
+      "fields": {
+        "case_id": "uuid",
+        "evidence_ids": "list",
+        "created_by": "string",
+        "priority": "string",
+        "status": "open|closed",
+        "assigned_to": "org_id",
+        "audit_log": "list"
+      }
+    }
+  }
+}

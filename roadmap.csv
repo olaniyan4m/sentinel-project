@@ -1,0 +1,10 @@
+phase,task,start_week,duration_weeks,owner,notes
+Phase0,Stakeholder MoUs,1,4,PM,"Private security, 1 bank, 1 insurer, community"
+Phase0,MVP ANPR upload API,1,6,Backend,"plates hash-only, metadata"
+Phase0,Mobile Android app (upload + panic),2,8,Mobile,"basic UX, encryption, upload"
+Phase0,Ledger prototype (Merkle),2,4,Backend,"store hashes, append-only"
+Phase1,Edge AI weapon/gunshot detection,10,12,ML,"Jetson/Coral models, quantized"
+Phase1,Graph DB & linking engine,12,10,Backend,"Neo4j index + link scoring"
+Phase1,Bank integration PoC,14,8,BD,"Secure API, pseudonymisation"
+Phase2,Scale nodes,24,20,Ops,"Onboard 50 security vehicles"
+Phase2,Law-enforcement gateway,30,8,Legal/Compliance,"RBAC, audit, court-order flows"

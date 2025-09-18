@@ -1,0 +1,48 @@
+{
+  "south_africa_focus": {
+    "bounding_box": {
+      "north": -22.0,
+      "south": -35.0,
+      "east": 33.0,
+      "west": 16.0
+    },
+    "major_cities": [
+      {
+        "name": "Johannesburg",
+        "lat": -26.2041,
+        "lon": 28.0473
+      },
+      {
+        "name": "Cape Town",
+        "lat": -33.9249,
+        "lon": 18.4241
+      },
+      {
+        "name": "Durban",
+        "lat": -29.8587,
+        "lon": 31.0218
+      },
+      {
+        "name": "Pretoria",
+        "lat": -25.7479,
+        "lon": 28.2293
+      }
+    ]
+  },
+  "threat_sources": [
+    "abuseipdb",
+    "shodan",
+    "virustotal",
+    "checkpoint_threatmap",
+    "saps_crime_data"
+  ],
+  "visualization_settings": {
+    "attack_markers": {
+      "size": "based_on_severity",
+      "color": "red_to_green_scale",
+      "opacity": 0.7
+    },
+    "update_frequency": "5_minutes",
+    "max_displayed_attacks": 1000
+  }
+}

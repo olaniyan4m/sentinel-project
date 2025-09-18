@@ -1,0 +1,1239 @@
+openapi: 3.0.3
+info:
+  title: Sentinel Evidence Mesh API v2.0
+  version: 2.0.0
+  description: >
+    Enhanced API for Sentinel - Civilian-first Anti-Robbery Evidence Mesh.
+    Integrates real South African crime data for intelligent deployment and response.
+    Owned by neutral operator; RBAC enforced with real-world crime insights.
+  contact:
+    name: Sentinel API Support
+    email: api-support@sentinel.co.za
+    url: https://sentinel.co.za
+  license:
+    name: Proprietary
+    url: https://sentinel.co.za/license
+
+servers:
+  - url: https://api.sentinel.co.za/v2
+    description: Production server
+  - url: https://staging-api.sentinel.co.za/v2
+    description: Staging server
+  - url: https://dev-api.sentinel.co.za/v2
+    description: Development server
+
+security:
+  - bearerAuth: []
+  - apiKey: []
+
+paths:
+  /v2/evidence/upload:
+    post:
+      summary: Upload evidence with real-time crime context
+      description: |
+        Upload evidence with automatic crime hotspot analysis and priority scoring.
+        Uses real SAPS crime data to enhance evidence processing and routing.
+      tags: [evidence]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancedEvidenceUpload'
+            examples:
+              anpr_capture:
+                summary: ANPR capture with crime context
+                value:
+                  uploader_id: "device_12345"
+                  evidence_hash: "sha256:abc123..."
+                  blob_pointer: "s3://encrypted-bucket/evidence/abc123"
+                  kind: "anpr"
+                  location:
+                    lat: -26.1076
+                    lon: 28.0567
+                    accuracy_m: 5.0
+                  timestamp: "2024-01-15T10:30:00Z"
+                  metadata:
+                    plate_detected: "ABC123GP"
+                    confidence: 0.95
+                    camera_angle: "front"
+                    weather: "clear"
+                    crime_hotspot_detected: true
+                    hotspot_severity: 8.5
+                  signature: "ed25519:def456..."
+                  encryption_key_id: "key_789"
+      responses:
+        '201':
+          description: Evidence accepted with crime context analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedEvidenceResponse'
+        '400':
+          description: Invalid evidence data
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+
+  /v2/plates/query:
+    post:
+      summary: Query plates with crime pattern analysis
+      description: |
+        Query license plates with enhanced crime pattern matching using real vehicle crime data.
+        Returns matches with risk scoring and geographic crime context.
+      tags: [plates]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancedPlateQuery'
+            examples:
+              high_risk_vehicle:
+                summary: Query for high-risk vehicle
+                value:
+                  plate_hash: "sha256:plate123..."
+                  time_window:
+                    from: "2024-01-15T00:00:00Z"
+                    to: "2024-01-15T23:59:59Z"
+                  geographic_bounds:
+                    north: -26.0
+                    south: -26.5
+                    east: 28.2
+                    west: 27.8
+                  include_crime_context: true
+                  risk_threshold: 0.7
+      responses:
+        '200':
+          description: Enhanced plate matches with crime context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedPlateQueryResponse'
+        '400':
+          description: Invalid query parameters
+        '401':
+          description: Unauthorized
+
+  /v2/cases/create:
+    post:
+      summary: Create case with intelligent evidence linking
+      description: |
+        Create a case packet with automatic evidence linking using real crime patterns.
+        Incorporates SAPS crime statistics for case prioritization.
+      tags: [cases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancedCreateCase'
+            examples:
+              vehicle_theft_case:
+                summary: Vehicle theft case with crime context
+                value:
+                  creator_id: "user_12345"
+                  evidence_ids: ["evid_abc123", "evid_def456"]
+                  priority: "high"
+                  title: "Vehicle Theft - ABC123GP"
+                  description: "Multiple ANPR hits on stolen vehicle in high-crime area"
+                  assigned_org: "security_corp_1"
+                  geographic_scope:
+                    center:
+                      lat: -26.2041
+                      lon: 28.0473
+                    radius_km: 10
+                  crime_context:
+                    crime_type: "theft_motor_vehicle"
+                    hotspot_severity: 8.5
+                    expected_response_time: "15_minutes"
+                    similar_cases_count: 23
+      responses:
+        '201':
+          description: Case created with crime context analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedCaseResponse'
+        '400':
+          description: Invalid case data
+        '401':
+          description: Unauthorized
+
+  /v2/hotspots/query:
+    get:
+      summary: Get crime hotspots with real-time data
+      description: |
+        Retrieve crime hotspots based on real SAPS crime statistics and current threat levels.
+        Includes deployment recommendations and priority scoring.
+      tags: [hotspots]
+      parameters:
+        - name: province
+          in: query
+          description: Filter by province
+          schema:
+            type: string
+            enum: [gauteng, western_cape, kwazulu_natal, eastern_cape, limpopo, mpumalanga, north_west, free_state, northern_cape]
+        - name: crime_type
+          in: query
+          description: Filter by crime type
+          schema:
+            type: string
+            enum: [murder, attempted_murder, assault_gbh, common_assault, robbery_aggravating, common_robbery, burglary_residential, burglary_non_residential, theft_motor_vehicle, theft_out_of_motor_vehicle, stock_theft, house_robbery, business_robbery, carjacking, cit_robberies]
+        - name: priority
+          in: query
+          description: Filter by Sentinel priority
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: radius_km
+          in: query
+          description: Search radius in kilometers
+          schema:
+            type: number
+            default: 10
+        - name: lat
+          in: query
+          description: Center latitude
+          schema:
+            type: number
+        - name: lon
+          in: query
+          description: Center longitude
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Crime hotspots with real data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrimeHotspotsResponse'
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+
+  /v2/vehicles/risk-analysis:
+    post:
+      summary: Analyze vehicle crime risk
+      description: |
+        Analyze vehicle crime risk using real vehicle theft and hijacking statistics.
+        Returns risk score and recommendations based on SAPS data.
+      tags: [vehicles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleRiskAnalysis'
+            examples:
+              toyota_hilux:
+                summary: Toyota Hilux risk analysis
+                value:
+                  make: "Toyota"
+                  model: "Hilux"
+                  year: 2023
+                  location:
+                    lat: -26.1076
+                    lon: 28.0567
+                    province: "gauteng"
+                  time_of_day: "18:30"
+                  day_of_week: "friday"
+      responses:
+        '200':
+          description: Vehicle risk analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRiskResponse'
+        '400':
+          description: Invalid vehicle data
+        '401':
+          description: Unauthorized
+
+  /v2/cit/routes/risk-assessment:
+    get:
+      summary: Get CIT route risk assessment
+      description: |
+        Get Cash-in-Transit route risk assessment using real CIT robbery data.
+        Includes historical incident data and security recommendations.
+      tags: [cit]
+      parameters:
+        - name: route_id
+          in: query
+          description: Specific route ID
+          schema:
+            type: string
+        - name: risk_level
+          in: query
+          description: Filter by risk level
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+      responses:
+        '200':
+          description: CIT route risk assessment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CITRouteRiskResponse'
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+
+  /v2/partners/security/list:
+    get:
+      summary: List private security partners
+      description: |
+        List private security partners with PSIRA data integration.
+        Includes officer counts, service categories, and partnership tiers.
+      tags: [partners]
+      parameters:
+        - name: tier
+          in: query
+          description: Filter by partnership tier
+          schema:
+            type: string
+            enum: [tier_1, tier_2, tier_3]
+        - name: service_category
+          in: query
+          description: Filter by service category
+          schema:
+            type: string
+            enum: [static_guarding, cash_in_transit, alarm_response, electronic_security, close_protection, event_security]
+        - name: province
+          in: query
+          description: Filter by province coverage
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Private security partners list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityPartnersResponse'
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+
+  /v2/deployments/recommendations:
+    get:
+      summary: Get deployment recommendations
+      description: |
+        Get Sentinel deployment recommendations based on real crime data analysis.
+        Includes priority scoring and expected incident reduction.
+      tags: [deployments]
+      parameters:
+        - name: priority
+          in: query
+          description: Filter by deployment priority
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: deployment_type
+          in: query
+          description: Filter by deployment type
+          schema:
+            type: string
+            enum: [full_stack, anpr_focused, mobile_anpr, gunshot_detection]
+        - name: province
+          in: query
+          description: Filter by province
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deployment recommendations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentRecommendationsResponse'
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+
+  /v2/analytics/crime-trends:
+    get:
+      summary: Get crime trend analytics
+      description: |
+        Get crime trend analytics using real SAPS data with temporal and geographic analysis.
+        Includes year-over-year changes and seasonal patterns.
+      tags: [analytics]
+      parameters:
+        - name: crime_type
+          in: query
+          description: Filter by crime type
+          schema:
+            type: string
+        - name: province
+          in: query
+          description: Filter by province
+          schema:
+            type: string
+        - name: time_period
+          in: query
+          description: Time period for analysis
+          schema:
+            type: string
+            enum: [monthly, quarterly, yearly]
+            default: monthly
+        - name: start_date
+          in: query
+          description: Start date for analysis
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date for analysis
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Crime trend analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrimeTrendsResponse'
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+
+  /v2/le/evidence-request:
+    post:
+      summary: Law enforcement evidence request with audit
+      description: |
+        Enhanced law enforcement evidence request with automatic crime context validation.
+        Includes court order verification and evidence chain of custody.
+      tags: [law_enforcement]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancedLEEvidenceRequest'
+            examples:
+              court_order_request:
+                summary: Court order evidence request
+                value:
+                  requesting_officer: "officer_12345"
+                  case_number: "SAPS_2024_001234"
+                  court_order_id: "order_abc123"
+                  evidence_ids: ["evid_abc123"]
+                  justification: "Investigation of vehicle theft case in high-crime area"
+                  crime_context:
+                    crime_type: "theft_motor_vehicle"
+                    hotspot_severity: 8.5
+                    similar_cases: 23
+                  retention_period: "90_days"
+                  urgency: "high"
+      responses:
+        '200':
+          description: Evidence request processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedLEEvidenceResponse'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Insufficient permissions
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for API authentication
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service authentication
+
+  schemas:
+    EnhancedEvidenceUpload:
+      type: object
+      required: [uploader_id, evidence_hash, kind, location, timestamp, signature]
+      properties:
+        uploader_id:
+          type: string
+          description: Unique device or user ID
+          example: "device_12345"
+        evidence_hash:
+          type: string
+          description: SHA256 hash of the evidence blob
+          example: "sha256:abc123def456..."
+        blob_pointer:
+          type: string
+          description: Encrypted object store pointer
+          example: "s3://encrypted-bucket/evidence/abc123"
+        kind:
+          type: string
+          enum: [anpr, video_clip, audio_clip, image, gunshot_event, report, cit_incident, cyber_fraud]
+          description: Type of evidence
+        location:
+          type: object
+          required: [lat, lon]
+          properties:
+            lat:
+              type: number
+              format: float
+              description: Latitude coordinate
+              example: -26.1076
+            lon:
+              type: number
+              format: float
+              description: Longitude coordinate
+              example: 28.0567
+            accuracy_m:
+              type: number
+              format: float
+              description: Location accuracy in meters
+              example: 5.0
+            province:
+              type: string
+              description: South African province
+              example: "gauteng"
+        timestamp:
+          type: string
+          format: date-time
+          description: Evidence capture timestamp
+          example: "2024-01-15T10:30:00Z"
+        metadata:
+          type: object
+          description: Evidence-specific metadata
+          properties:
+            plate_detected:
+              type: string
+              description: Detected license plate
+              example: "ABC123GP"
+            confidence:
+              type: number
+              format: float
+              description: Detection confidence score
+              example: 0.95
+            camera_angle:
+              type: string
+              description: Camera angle
+              example: "front"
+            weather:
+              type: string
+              description: Weather conditions
+              example: "clear"
+            crime_hotspot_detected:
+              type: boolean
+              description: Whether location is a known crime hotspot
+              example: true
+            hotspot_severity:
+              type: number
+              format: float
+              description: Crime hotspot severity score
+              example: 8.5
+        signature:
+          type: string
+          description: Upload signature (Ed25519)
+          example: "ed25519:def456..."
+        encryption_key_id:
+          type: string
+          description: Encryption key identifier
+          example: "key_789"
+
+    EnhancedEvidenceResponse:
+      type: object
+      properties:
+        evidence_id:
+          type: string
+          description: Unique evidence identifier
+          example: "evid_abc123"
+        ledger_transaction:
+          type: string
+          description: Blockchain transaction ID
+          example: "tx_def456"
+        status:
+          type: string
+          enum: [accepted, processing, rejected]
+          description: Evidence processing status
+        retention_until:
+          type: string
+          format: date-time
+          description: Evidence retention expiry
+        crime_context:
+          type: object
+          description: Crime context analysis
+          properties:
+            hotspot_detected:
+              type: boolean
+            hotspot_severity:
+              type: number
+              format: float
+            crime_type_probability:
+              type: object
+              additionalProperties:
+                type: number
+                format: float
+            risk_score:
+              type: number
+              format: float
+        processing_time_ms:
+          type: integer
+          description: Evidence processing time in milliseconds
+
+    EnhancedPlateQuery:
+      type: object
+      required: [plate_hash, time_window]
+      properties:
+        plate_hash:
+          type: string
+          description: Hashed license plate
+          example: "sha256:plate123..."
+        time_window:
+          type: object
+          required: [from, to]
+          properties:
+            from:
+              type: string
+              format: date-time
+            to:
+              type: string
+              format: date-time
+        geographic_bounds:
+          type: object
+          properties:
+            north:
+              type: number
+              format: float
+            south:
+              type: number
+              format: float
+            east:
+              type: number
+              format: float
+            west:
+              type: number
+              format: float
+        include_crime_context:
+          type: boolean
+          description: Include crime context analysis
+          default: true
+        risk_threshold:
+          type: number
+          format: float
+          description: Minimum risk threshold for results
+          default: 0.5
+
+    EnhancedPlateQueryResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlateMatch'
+        total_matches:
+          type: integer
+          description: Total number of matches
+        query_id:
+          type: string
+          description: Unique query identifier
+        crime_context:
+          type: object
+          description: Overall crime context for query
+          properties:
+            area_crime_rate:
+              type: number
+              format: float
+            vehicle_risk_score:
+              type: number
+              format: float
+            hotspot_density:
+              type: number
+              format: float
+
+    PlateMatch:
+      type: object
+      properties:
+        evidence_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        location:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+        confidence:
+          type: number
+          format: float
+        device_id:
+          type: string
+        organization:
+          type: string
+        crime_context:
+          type: object
+          properties:
+            hotspot_severity:
+              type: number
+              format: float
+            crime_type_probability:
+              type: object
+              additionalProperties:
+                type: number
+                format: float
+            risk_score:
+              type: number
+              format: float
+
+    EnhancedCreateCase:
+      type: object
+      required: [creator_id, evidence_ids, priority]
+      properties:
+        creator_id:
+          type: string
+          description: Case creator identifier
+        evidence_ids:
+          type: array
+          items:
+            type: string
+          description: List of evidence IDs
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+          description: Case priority level
+        title:
+          type: string
+          description: Case title
+        description:
+          type: string
+          description: Case description
+        assigned_org:
+          type: string
+          description: Assigned organization
+        geographic_scope:
+          type: object
+          properties:
+            center:
+              type: object
+              properties:
+                lat:
+                  type: number
+                  format: float
+                lon:
+                  type: number
+                  format: float
+            radius_km:
+              type: number
+              format: float
+        crime_context:
+          type: object
+          description: Crime context analysis
+          properties:
+            crime_type:
+              type: string
+            hotspot_severity:
+              type: number
+              format: float
+            expected_response_time:
+              type: string
+            similar_cases_count:
+              type: integer
+
+    EnhancedCaseResponse:
+      type: object
+      properties:
+        case_id:
+          type: string
+        status:
+          type: string
+          enum: [open, investigating, closed]
+        created_at:
+          type: string
+          format: date-time
+        assigned_to:
+          type: string
+        evidence_count:
+          type: integer
+        audit_trail:
+          type: array
+          items:
+            type: string
+        crime_context:
+          type: object
+          properties:
+            risk_score:
+              type: number
+              format: float
+            recommended_response_time:
+              type: string
+            similar_cases:
+              type: array
+              items:
+                type: string
+
+    CrimeHotspotsResponse:
+      type: object
+      properties:
+        hotspots:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrimeHotspot'
+        total_hotspots:
+          type: integer
+        query_metadata:
+          type: object
+          properties:
+            query_time:
+              type: string
+              format: date-time
+            data_freshness:
+              type: string
+              format: date-time
+
+    CrimeHotspot:
+      type: object
+      properties:
+        hotspot_id:
+          type: string
+        name:
+          type: string
+        province:
+          type: string
+        crime_type:
+          type: string
+        incident_count:
+          type: integer
+        severity_score:
+          type: number
+          format: float
+        coordinates:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+        radius_km:
+          type: number
+          format: float
+        peak_hours:
+          type: array
+          items:
+            type: string
+        peak_days:
+          type: array
+          items:
+            type: string
+        seasonal_factors:
+          type: object
+          additionalProperties:
+            type: number
+            format: float
+        sentinel_priority:
+          type: string
+          enum: [critical, high, medium, low]
+        deployment_recommendation:
+          type: object
+          properties:
+            anpr_coverage:
+              type: string
+              enum: [full, partial, none]
+            gunshot_detection:
+              type: string
+              enum: [yes, no]
+            citizen_app_priority:
+              type: string
+              enum: [high, medium, low]
+
+    VehicleRiskAnalysis:
+      type: object
+      required: [make, model, location]
+      properties:
+        make:
+          type: string
+          description: Vehicle manufacturer
+          example: "Toyota"
+        model:
+          type: string
+          description: Vehicle model
+          example: "Hilux"
+        year:
+          type: integer
+          description: Vehicle year
+          example: 2023
+        location:
+          type: object
+          required: [lat, lon, province]
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+            province:
+              type: string
+        time_of_day:
+          type: string
+          description: Time of day for risk assessment
+          example: "18:30"
+        day_of_week:
+          type: string
+          description: Day of week for risk assessment
+          example: "friday"
+
+    VehicleRiskResponse:
+      type: object
+      properties:
+        risk_score:
+          type: number
+          format: float
+          description: Overall risk score (0-10)
+        theft_risk:
+          type: number
+          format: float
+          description: Theft risk score
+        hijacking_risk:
+          type: number
+          format: float
+          description: Hijacking risk score
+        location_risk:
+          type: number
+          format: float
+          description: Location-based risk score
+        temporal_risk:
+          type: number
+          format: float
+          description: Time-based risk score
+        recommendations:
+          type: array
+          items:
+            type: string
+          description: Risk mitigation recommendations
+        crime_statistics:
+          type: object
+          description: Relevant crime statistics
+          properties:
+            total_thefts:
+              type: integer
+            total_hijackings:
+              type: integer
+            change_yoy:
+              type: number
+              format: float
+
+    CITRouteRiskResponse:
+      type: object
+      properties:
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CITRoute'
+        total_routes:
+          type: integer
+
+    CITRoute:
+      type: object
+      properties:
+        route_id:
+          type: string
+        route_name:
+          type: string
+        start_location:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+        end_location:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+        risk_level:
+          type: string
+          enum: [low, medium, high, critical]
+        historical_incidents:
+          type: integer
+        security_measures:
+          type: array
+          items:
+            type: string
+        sentinel_coverage:
+          type: boolean
+        priority_score:
+          type: number
+          format: float
+
+    SecurityPartnersResponse:
+      type: object
+      properties:
+        partners:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityPartner'
+        total_partners:
+          type: integer
+
+    SecurityPartner:
+      type: object
+      properties:
+        partner_id:
+          type: string
+        company_name:
+          type: string
+        psira_registration:
+          type: string
+        officer_count:
+          type: integer
+        service_categories:
+          type: array
+          items:
+            type: string
+        geographic_coverage:
+          type: object
+        partnership_tier:
+          type: string
+          enum: [tier_1, tier_2, tier_3]
+        contact_info:
+          type: object
+        integration_capabilities:
+          type: object
+
+    DeploymentRecommendationsResponse:
+      type: object
+      properties:
+        deployments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeploymentRecommendation'
+        total_deployments:
+          type: integer
+
+    DeploymentRecommendation:
+      type: object
+      properties:
+        deployment_id:
+          type: string
+        location_name:
+          type: string
+        coordinates:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: float
+            lon:
+              type: number
+              format: float
+        priority:
+          type: string
+          enum: [critical, high, medium, low]
+        expected_incidents_per_month:
+          type: integer
+        deployment_type:
+          type: string
+          enum: [full_stack, anpr_focused, mobile_anpr, gunshot_detection]
+        components:
+          type: array
+          items:
+            type: string
+        justification:
+          type: string
+        status:
+          type: string
+          enum: [planned, deployed, active, inactive]
+
+    CrimeTrendsResponse:
+      type: object
+      properties:
+        trends:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrimeTrend'
+        summary:
+          type: object
+          properties:
+            total_incidents:
+              type: integer
+            change_yoy:
+              type: number
+              format: float
+            peak_periods:
+              type: array
+              items:
+                type: string
+
+    CrimeTrend:
+      type: object
+      properties:
+        period:
+          type: string
+        incident_count:
+          type: integer
+        change_yoy:
+          type: number
+          format: float
+        trend_direction:
+          type: string
+          enum: [increasing, decreasing, stable]
+
+    EnhancedLEEvidenceRequest:
+      type: object
+      required: [requesting_officer, case_number, evidence_ids]
+      properties:
+        requesting_officer:
+          type: string
+          description: SAPS officer identifier
+        case_number:
+          type: string
+          description: SAPS case number
+        court_order_id:
+          type: string
+          description: Court order identifier
+        evidence_ids:
+          type: array
+          items:
+            type: string
+          description: Requested evidence IDs
+        justification:
+          type: string
+          description: Request justification
+        crime_context:
+          type: object
+          description: Crime context for validation
+          properties:
+            crime_type:
+              type: string
+            hotspot_severity:
+              type: number
+              format: float
+            similar_cases:
+              type: integer
+        retention_period:
+          type: string
+          description: Evidence retention period
+        urgency:
+          type: string
+          enum: [low, medium, high, critical]
+          description: Request urgency level
+
+    EnhancedLEEvidenceResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status:
+          type: string
+          enum: [pending_approval, approved, rejected, processing]
+        estimated_processing_time:
+          type: string
+        audit_trail:
+          type: array
+          items:
+            type: string
+        evidence_package:
+          type: object
+          description: Evidence package (if approved)
+          properties:
+            package_id:
+              type: string
+            download_url:
+              type: string
+            expiry_time:
+              type: string
+              format: date-time
+            access_log:
+              type: array
+              items:
+                type: string
+
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Unauthorized"
+              message:
+                type: string
+                example: "Invalid or missing authentication token"
+
+    ForbiddenError:
+      description: Insufficient permissions for the requested resource
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Forbidden"
+              message:
+                type: string
+                example: "Insufficient permissions for this operation"
+
+    RateLimitError:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Rate Limit Exceeded"
+              message:
+                type: string
+                example: "Too many requests. Please try again later."
+              retry_after:
+                type: integer
+                example: 60
+
+tags:
+  - name: evidence
+    description: Evidence upload and management
+  - name: plates
+    description: License plate query and analysis
+  - name: cases
+    description: Case creation and management
+  - name: hotspots
+    description: Crime hotspot analysis
+  - name: vehicles
+    description: Vehicle crime risk analysis
+  - name: cit
+    description: Cash-in-Transit operations
+  - name: partners
+    description: Private security partnerships
+  - name: deployments
+    description: Sentinel deployment recommendations
+  - name: analytics
+    description: Crime analytics and trends
+  - name: law_enforcement
+    description: Law enforcement access and requests

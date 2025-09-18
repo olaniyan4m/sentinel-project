@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "total_hotspots": 98,
+    "total_vehicle_patterns": 10,
+    "total_cit_routes": 3,
+    "total_partners": 3,
+    "total_deployments": 5
+  },
+  "top_priorities": {
+    "critical_hotspots": [],
+    "high_risk_vehicles": [
+      {
+        "vehicle_make": "Toyota",
+        "vehicle_model": "Hilux",
+        "risk_score": 10.0
+      },
+      {
+        "vehicle_make": "Toyota",
+        "vehicle_model": "Corolla",
+        "risk_score": 9.876
+      },
+      {
+        "vehicle_make": "Volkswagen",
+        "vehicle_model": "Polo",
+        "risk_score": 8.765
+      }
+    ],
+    "critical_deployments": [
+      {
+        "location_name": "Sandton CBD",
+        "expected_incidents_per_month": 45
+      },
+      {
+        "location_name": "Cape Town CBD",
+        "expected_incidents_per_month": 38
+      }
+    ]
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "sentinel_data_integration": {
+    "version": "1.0",
+    "last_updated": "2025-09-18T10:40:46.378523",
+    "data_sources_integrated": [
+      "SAPS Official Crime Statistics 2023/24",
+      "PSIRA Annual Report 2023/24", 
+      "CIT Robbery Statistics",
+      "Vehicle Crime Data",
+      "Cyber Fraud Statistics",
+      "Private Security Industry Data"
+    ],
+    "enhanced_entities": {
+      "CrimeHotspot": {
+        "fields": {
+          "hotspot_id": "uuid",
+          "name": "string",
+          "province": "string",
+          "crime_type": "enum",
+          "incident_count": "integer",
+          "severity_score": "float",
+          "coordinates": {
+            "lat": "float",
+            "lon": "float",
+            "radius_km": "float"
+          },
+          "temporal_patterns": {
+            "peak_hours": "array",
+            "peak_days": "array",
+            "seasonal_factors": "object"
+          },
+          "sentinel_priority": "enum",
+          "deployment_recommendation": "object"
+        },
+        "real_data_integration": {
+          "saps_crime_stats": "contact_crimes, property_related_crimes, trio_crimes",
+          "geographic_breakdown": "provinces data",
+          "temporal_patterns": "monthly_trends, hourly_patterns"
+        }
+      },
+      "VehicleCrimePattern": {
+        "fields": {
+          "pattern_id": "uuid",
+          "vehicle_make": "string",
+          "vehicle_model": "string",
+          "crime_type": "enum",
+          "theft_count": "integer",
+          "hijacking_count": "integer",
+          "risk_score": "float",
+          "geographic_hotspots": "array",
+          "temporal_patterns": "object",
+          "anpr_priority": "enum"
+        },
+        "real_data_integration": {
+          "vehicle_crime_data": "popular_vehicles, theft_statistics, hijacking_statistics",
+          "geographic_patterns": "theft_hotspots, hijacking_hotspots"
+        }
+      },
+      "PrivateSecurityPartner": {
+        "fields": {
+          "partner_id": "uuid",
+          "company_name": "string",
+          "psira_registration": "string",
+          "officer_count": "integer",
+          "service_categories": "array",
+          "geographic_coverage": "object",
+          "partnership_tier": "enum",
+          "contact_info": "object",
+          "integration_capabilities": "object"
+        },
+        "real_data_integration": {
+          "psira_data": "industry_overview, company_breakdown, service_categories",
+          "geographic_distribution": "provinces coverage"
+        }
+      },
+      "CITRoute": {
+        "fields": {
+          "route_id": "uuid",
+          "route_name": "string",
+          "start_location": "object",
+          "end_location": "object",
+          "risk_level": "enum",
+          "historical_incidents": "integer",
+          "security_measures": "array",
+          "sentinel_coverage": "boolean",
+          "priority_score": "float"
+        },
+        "real_data_integration": {
+          "cit_robbery_data": "geographic_hotspots, modus_operandi, temporal_patterns",
+          "monthly_breakdown": "peak_months, peak_hours"
+        }
+      },
+      "CyberFraudPattern": {
+        "fields": {
+          "pattern_id": "uuid",
+          "fraud_type": "enum",
+          "victim_demographics": "object",
+          "geographic_distribution": "object",
+          "temporal_patterns": "object",
+          "amount_range": "object",
+          "detection_priority": "enum",
+          "cross_reference_indicators": "array"
+        },
+        "real_data_integration": {
+          "cyber_fraud_data": "fraud_types, victim_demographics, geographic_distribution",
+          "temporal_patterns": "peak_hours, peak_days, monthly_trends"
+        }
+      }
+    },
+    "sentinel_deployment_strategy": {
+      "tier_1_deployments": [
+        {
+          "location": "Sandton CBD",
+          "coordinates": {"lat": -26.1076, "lon": 28.0567},
+          "priority": "critical",
+          "expected_incidents_per_month": 45,
+          "deployment_type": "full_stack",
+          "components": ["anpr", "gunshot_detection", "citizen_app", "private_security_integration"],
+          "justification": "Highest crime density area in Gauteng, major financial district"
+        },
+        {
+          "location": "Cape Town CBD",
+          "coordinates": {"lat": -33.9249, "lon": 18.4241},
+          "priority": "critical", 
+          "expected_incidents_per_month": 38,
+          "deployment_type": "full_stack",
+          "components": ["anpr", "gunshot_detection", "citizen_app", "private_security_integration"],
+          "justification": "Major tourist and business hub, high vehicle crime rates"
+        },
+        {
+          "location": "Durban CBD",
+          "coordinates": {"lat": -29.8587, "lon": 31.0218},
+          "priority": "high",
+          "expected_incidents_per_month": 32,
+          "deployment_type": "full_stack",
+          "components": ["anpr", "gunshot_detection", "citizen_app"],
+          "justification": "Major port city, significant CIT and vehicle crime"
+        }
+      ],
+      "tier_2_deployments": [
+        {
+          "location": "Pretoria CBD",
+          "coordinates": {"lat": -25.7479, "lon": 28.2293},
+          "priority": "high",
+          "expected_incidents_per_month": 28,
+          "deployment_type": "anpr_focused",
+          "components": ["anpr", "citizen_app"],
+          "justification": "Government center, moderate crime rates"
+        },
+        {
+          "location": "Port Elizabeth CBD",
+          "coordinates": {"lat": -33.9608, "lon": 25.6022},
+          "priority": "medium",
+          "expected_incidents_per_month": 22,
+          "deployment_type": "anpr_focused",
+          "components": ["anpr", "citizen_app"],
+          "justification": "Industrial hub, growing crime concerns"
+        }
+      ],
+      "highway_corridors": [
+        {
+          "route": "N1 Highway (Johannesburg to Pretoria)",
+          "coordinates": [
+            {"lat": -26.2041, "lon": 28.0473},
+            {"lat": -25.7479, "lon": 28.2293}
+          ],
+          "priority": "critical",
+          "theft_rate": 0.15,
+          "deployment_type": "mobile_anpr",
+          "components": ["mobile_anpr", "citizen_app"],
+          "justification": "Highest vehicle theft corridor in SA"
+        },
+        {
+          "route": "M2 Highway (Durban to Pietermaritzburg)",
+          "coordinates": [
+            {"lat": -29.8587, "lon": 31.0218},
+            {"lat": -29.6006, "lon": 30.3796}
+          ],
+          "priority": "high",
+          "theft_rate": 0.18,
+          "deployment_type": "mobile_anpr",
+          "components": ["mobile_anpr", "citizen_app"],
+          "justification": "High hijacking and theft rates"
+        }
+      ]
+    },
+    "private_security_partnerships": {
+      "tier_1_partners": [
+        {
+          "company": "ADT Security",
+          "officers": 15000,
+          "coverage": "national",
+          "specialties": ["static_guarding", "alarm_response", "cash_in_transit"],
+          "integration_priority": "critical",
+          "contact": "partnerships@adt.co.za",
+          "expected_roi": "High - national coverage, large officer base"
+        },
+        {
+          "company": "Chubb Security",
+          "officers": 12000,
+          "coverage": "major_cities",
+          "specialties": ["static_guarding", "electronic_security"],
+          "integration_priority": "high",
+          "contact": "business@chubb.co.za",
+          "expected_roi": "High - premium client base, tech-forward"
+        },
+        {
+          "company": "Fidelity ADT",
+          "officers": 18000,
+          "coverage": "national",
+          "specialties": ["static_guarding", "alarm_response", "cash_in_transit"],
+          "integration_priority": "critical",
+          "contact": "partnerships@fidelity.co.za",
+          "expected_roi": "Highest - largest officer base, comprehensive coverage"
+        }
+      ],
+      "cit_specialists": [
+        {
+          "company": "G4S Cash Solutions",
+          "vehicles": 500,
+          "routes": 1200,
+          "coverage": "national",
+          "integration_priority": "critical",
+          "contact": "security@g4s.co.za",
+          "expected_roi": "Critical - direct CIT protection, real-time tracking"
+        },
+        {
+          "company": "Fidelity Cash Solutions",
+          "vehicles": 450,
+          "routes": 1100,
+          "coverage": "national",
+          "integration_priority": "critical",
+          "contact": "cashsolutions@fidelity.co.za",
+          "expected_roi": "Critical - major CIT operator, high-risk routes"
+        },
+        {
+          "company": "SBV Services",
+          "vehicles": 400,
+          "routes": 1000,
+          "coverage": "national",
+          "integration_priority": "high",
+          "contact": "security@sbv.co.za",
+          "expected_roi": "High - significant CIT operations"
+        }
+      ]
+    },
+    "banking_partnerships": {
+      "tier_1_banks": [
+        {
+          "bank": "Standard Bank",
+          "market_share": 0.25,
+          "fraud_detection_capability": "advanced",
+          "integration_priority": "critical",
+          "contact": "fraud.prevention@standardbank.co.za",
+          "expected_roi": "High - largest bank, advanced fraud systems"
+        },
+        {
+          "bank": "First National Bank (FNB)",
+          "market_share": 0.20,
+          "fraud_detection_capability": "advanced",
+          "integration_priority": "critical",
+          "contact": "security@fnb.co.za",
+          "expected_roi": "High - tech-forward, digital banking leader"
+        },
+        {
+          "bank": "Absa Bank",
+          "market_share": 0.18,
+          "fraud_detection_capability": "advanced",
+          "integration_priority": "high",
+          "contact": "fraud@absa.co.za",
+          "expected_roi": "High - significant market share"
+        }
+      ]
+    },
+    "insurance_partnerships": {
+      "tier_1_insurers": [
+        {
+          "company": "Santam",
+          "market_share": 0.22,
+          "vehicle_insurance_share": 0.25,
+          "integration_priority": "critical",
+          "contact": "partnerships@santam.co.za",
+          "expected_roi": "High - largest insurer, high vehicle claims"
+        },
+        {
+          "company": "OUTsurance",
+          "market_share": 0.15,
+          "vehicle_insurance_share": 0.18,
+          "integration_priority": "high",
+          "contact": "business@outsurance.co.za",
+          "expected_roi": "High - direct model, tech-forward"
+        },
+        {
+          "company": "Discovery Insure",
+          "market_share": 0.12,
+          "vehicle_insurance_share": 0.15,
+          "integration_priority": "high",
+          "contact": "partnerships@discovery.co.za",
+          "expected_roi": "High - behavior-based pricing, tech integration"
+        }
+      ]
+    },
+    "real_data_insights": {
+      "crime_trends": {
+        "increasing_crimes": [
+          {"crime": "carjacking", "change_yoy": 2.1, "sentinel_priority": "critical"},
+          {"crime": "theft_motor_vehicle", "change_yoy": 2.3, "sentinel_priority": "critical"},
+          {"crime": "cyber_fraud", "change_yoy": 15.2, "sentinel_priority": "high"}
+        ],
+        "decreasing_crimes": [
+          {"crime": "cit_robberies", "change_yoy": -15.2, "sentinel_priority": "monitor"},
+          {"crime": "common_assault", "change_yoy": -2.1, "sentinel_priority": "low"}
+        ]
+      },
+      "geographic_priorities": {
+        "critical_provinces": [
+          {"province": "Gauteng", "crime_rate": 2896, "population": 15773000, "priority": "critical"},
+          {"province": "Western Cape", "crime_rate": 3292, "population": 7125000, "priority": "critical"},
+          {"province": "KwaZulu-Natal", "crime_rate": 3012, "population": 11478000, "priority": "high"}
+        ]
+      },
+      "temporal_insights": {
+        "peak_crime_periods": [
+          {"period": "December", "factor": 1.15, "reason": "Holiday season, increased activity"},
+          {"period": "18:00-22:00", "factor": 1.25, "reason": "Evening rush hour, reduced visibility"},
+          {"period": "Weekends", "factor": 1.25, "reason": "Reduced police presence, increased social activity"}
+        ]
+      }
+    },
+    "sentinel_roi_projections": {
+      "pilot_phase": {
+        "duration": "6_months",
+        "deployment_areas": 5,
+        "expected_incidents_detected": 150,
+        "response_time_improvement": "30%",
+        "false_positive_rate": "<10%",
+        "cost_savings": {
+          "insurance_claims_reduction": 2500000,
+          "police_resource_optimization": 1500000,
+          "private_security_efficiency": 1000000
+        }
+      },
+      "scale_phase": {
+        "duration": "18_months",
+        "deployment_areas": 25,
+        "expected_incidents_detected": 1500,
+        "response_time_improvement": "45%",
+        "false_positive_rate": "<8%",
+        "cost_savings": {
+          "insurance_claims_reduction": 25000000,
+          "police_resource_optimization": 15000000,
+          "private_security_efficiency": 10000000
+        }
+      }
+    }
+  }
+}

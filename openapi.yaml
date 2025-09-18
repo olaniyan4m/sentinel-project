@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Sentinel Evidence Ingest API
+  version: 0.1.0
+  description: >
+    API for secure, privacy-first evidence ingestion, querying and case packet generation.
+    Owned by neutral operator; RBAC enforced. Only metadata and hashes required for many endpoints.
+servers:
+  - url: https://api.sentinel.example/v1
+paths:
+  /v1/evidence/upload:
+    post:
+      summary: Upload evidence metadata and encrypted blob pointer
+      tags: [evidence]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvidenceUpload'
+      responses:
+        '201':
+          description: Evidence accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceResponse'
+  /v1/plates/query:
+    post:
+      summary: Query plates (hashed) for matches in time-window
+      tags: [plates]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plate:
+                  type: string
+                from_ts:
+                  type: string
+                  format: date-time
+                to_ts:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: List of matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlateQueryResponse'
+  /v1/cases/create:
+    post:
+      summary: Create a case packet (from linked evidence)
+      tags: [cases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCase'
+      responses:
+        '201':
+          description: Case created
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    EvidenceUpload:
+      type: object
+      required: [uploader_id, evidence_hash, kind, location, timestamp, signature]
+      properties:
+        uploader_id:
+          type: string
+          description: Unique device or user ID
+        evidence_hash:
+          type: string
+          description: SHA256 hash of the evidence blob
+        blob_pointer:
+          type: string
+          description: Encrypted object store pointer (S3 URL or similar)
+        kind:
+          type: string
+          enum: [anpr, video_clip, audio_clip, image, gunshot_event, report]
+        location:
+          type: object
+          properties:
+            lat: {type: number}
+            lon: {type: number}
+            accuracy_m: {type: number}
+        timestamp:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        signature:
+          type: string
+          description: Upload signature (uploader signs the evidence_hash + timestamp)
+    EvidenceResponse:
+      type: object
+      properties:
+        id: {type: string}
+        status: {type: string}
+    PlateQueryResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            type: object
+            properties:
+              plate_hash: {type: string}
+              evidence_ids:
+                type: array
+                items: {type: string}
+    CreateCase:
+      type: object
+      required: [creator_id, evidence_ids, priority]
+      properties:
+        creator_id: {type: string}
+        evidence_ids:
+          type: array
+          items: {type: string}
+        priority:
+          type: string
+          enum: [low, medium, high, critical]

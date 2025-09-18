@@ -1,0 +1,72 @@
+{
+  "osint_sources": [
+    {
+      "name": "social_media_monitoring",
+      "platforms": [
+        "Twitter",
+        "Facebook",
+        "Instagram"
+      ],
+      "keywords": [
+        "crime",
+        "robbery",
+        "hijacking",
+        "fraud"
+      ],
+      "geographic_filter": "South Africa"
+    },
+    {
+      "name": "dark_web_monitoring",
+      "sources": [
+        "tor_networks",
+        "cryptocurrency_exchanges"
+      ],
+      "keywords": [
+        "stolen_cards",
+        "identity_theft",
+        "fraud"
+      ],
+      "geographic_filter": "South Africa"
+    },
+    {
+      "name": "public_records",
+      "sources": [
+        "court_records",
+        "police_reports",
+        "news_articles"
+      ],
+      "keywords": [
+        "criminal_activity",
+        "fraud",
+        "theft"
+      ],
+      "geographic_filter": "South Africa"
+    }
+  ],
+  "collection_schedule": {
+    "social_media": "every_15_minutes",
+    "dark_web": "every_hour",
+    "public_records": "daily"
+  },
+  "analysis_rules": [
+    {
+      "name": "credibility_scoring",
+      "factors": [
+        "source_reliability",
+        "corroboration",
+        "recency"
+      ],
+      "threshold": 0.6
+    },
+    {
+      "name": "threat_classification",
+      "categories": [
+        "cyber",
+        "physical",
+        "financial",
+        "social"
+      ],
+      "auto_classify": true
+    }
+  ]
+}

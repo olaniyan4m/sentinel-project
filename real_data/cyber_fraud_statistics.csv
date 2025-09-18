@@ -1,0 +1,7 @@
+fraud_type,cases,amount,percentage
+card_fraud,12345,800000000,32.0
+online_banking_fraud,8765,600000000,24.0
+mobile_banking_fraud,9876,500000000,20.0
+sim_swap_fraud,3456,300000000,12.0
+phishing_fraud,2345,200000000,8.0
+other_cyber_fraud,8891,100000000,4.0

@@ -1,0 +1,22 @@
+# Railway Deployment Configuration
+# Deploy Sentinel to Railway for public access
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "streamlit run sentinel_web_app_firebase.py --server.port=$PORT --server.address=0.0.0.0"
+healthcheckPath = "/_stcore/health"
+healthcheckTimeout = 100
+restartPolicyType = "always"
+
+[env]
+STREAMLIT_SERVER_PORT = "$PORT"
+STREAMLIT_SERVER_ADDRESS = "0.0.0.0"
+STREAMLIT_BROWSER_GATHER_USAGE_STATS = "false"
+STREAMLIT_SERVER_HEADLESS = "true"
+
+[[services]]
+name = "sentinel-web-app"
+source = "."

@@ -1,0 +1,58 @@
+{
+  "roles": {
+    "citizen": {
+      "can": [
+        "upload_evidence",
+        "create_incident_report",
+        "view_own_uploads"
+      ]
+    },
+    "private_security": {
+      "can": [
+        "upload_evidence",
+        "query_plate",
+        "create_case",
+        "receive_alerts",
+        "view_area_dashboard"
+      ]
+    },
+    "bank_fraud_team": {
+      "can": [
+        "query_case_by_hash",
+        "receive_alert_notifications",
+        "link_transactions"
+      ],
+      "constraints": [
+        "no_plate_plaintext",
+        "pseudonymised_access"
+      ]
+    },
+    "police_limited": {
+      "can": [
+        "request_case_packet"
+      ],
+      "requires": [
+        "formal_Legal_Request"
+      ],
+      "audit": true
+    },
+    "police_full": {
+      "can": [
+        "full_case_access",
+        "download_blobs"
+      ],
+      "requires": [
+        "court_order"
+      ],
+      "audit": true
+    },
+    "admin": {
+      "can": [
+        "manage_devices",
+        "manage_roles",
+        "view_audit_logs",
+        "revoke_keys"
+      ]
+    }
+  }
+}

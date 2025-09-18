@@ -1,0 +1,62 @@
+{
+  "dashboard_name": "Sentinel Enhanced Threat Intelligence",
+  "version": "2.0",
+  "components": [
+    {
+      "name": "Real-time Threat Map",
+      "type": "map_visualization",
+      "source": "geoip_attack_map",
+      "update_frequency": "5_minutes"
+    },
+    {
+      "name": "Edge ML Model Status",
+      "type": "model_monitoring",
+      "source": "edge_ml_models",
+      "metrics": [
+        "accuracy",
+        "inference_time",
+        "deployment_status"
+      ]
+    },
+    {
+      "name": "Threat Correlations",
+      "type": "correlation_analysis",
+      "source": "threat_correlations",
+      "visualization": "network_graph"
+    },
+    {
+      "name": "OSINT Evidence",
+      "type": "evidence_timeline",
+      "source": "osint_evidence",
+      "filters": [
+        "source",
+        "confidence",
+        "verification_status"
+      ]
+    },
+    {
+      "name": "NCNN Performance",
+      "type": "performance_metrics",
+      "source": "ncnn_optimizations",
+      "metrics": [
+        "inference_speed",
+        "model_size",
+        "accuracy"
+      ]
+    }
+  ],
+  "integrations": {
+    "checkpoint_threatmap": {
+      "iframe_fallback": true,
+      "custom_map_fallback": "leaflet"
+    },
+    "threatmapper": {
+      "correlation_engine": true,
+      "real_time_updates": true
+    },
+    "raven_osint": {
+      "automated_collection": true,
+      "credibility_scoring": true
+    }
+  }
+}

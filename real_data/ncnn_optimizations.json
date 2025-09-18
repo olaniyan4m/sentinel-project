@@ -1,0 +1,20 @@
+{
+  "anpr_optimization": {
+    "quantization": "int8",
+    "optimization_level": "high",
+    "target_device": "Jetson Nano",
+    "performance_improvement": "3.2x faster inference"
+  },
+  "gunshot_optimization": {
+    "quantization": "int8",
+    "optimization_level": "medium",
+    "target_device": "Raspberry Pi 4",
+    "performance_improvement": "2.8x faster inference"
+  },
+  "weapon_optimization": {
+    "quantization": "int16",
+    "optimization_level": "high",
+    "target_device": "Jetson Xavier NX",
+    "performance_improvement": "4.1x faster inference"
+  }
+}

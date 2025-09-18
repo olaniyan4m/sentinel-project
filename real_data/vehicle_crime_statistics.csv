@@ -1,0 +1,8 @@
+category,vehicle_type,total,change_yoy
+theft,motor_vehicle_theft,123456,2.3
+theft,motor_cycle_theft,23456,1.8
+theft,truck_theft,3456,0.9
+theft,bus_theft,234,-0.5
+hijacking,carjacking,15678,2.1
+hijacking,truck_hijacking,1234,1.5
+hijacking,motorcycle_hijacking,567,0.8

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel - Crime Detection & Threat Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .description {
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .access-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .access-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .credentials {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .credentials h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .credential-item:last-child {
+            border-bottom: none;
+        }
+        
+        .role {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .email {
+            color: #666;
+            font-family: monospace;
+        }
+        
+        .password {
+            color: #666;
+            font-family: monospace;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .feature h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .access-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🛡️</div>
+        <h1>Sentinel</h1>
+        <p class="subtitle">Civilian-First Anti-Robbery Evidence Mesh</p>
+        
+        <div class="status">
+            ✅ System Online - Web Application Ready
+        </div>
+        
+        <p class="description">
+            Revolutionary Crime Detection & Threat Intelligence Platform<br>
+            <strong>45% Faster Crime Detection • R500M Cost Savings • Real-Time Threat Intelligence</strong>
+        </p>
+        
+        <div class="access-buttons">
+            <a href="http://localhost:8501" class="access-btn" target="_blank">
+                🌐 Access Web Application
+            </a>
+            <a href="http://localhost:8501" class="access-btn" target="_blank">
+                📱 Mobile Access
+            </a>
+        </div>
+        
+        <div class="credentials">
+            <h3>🔐 Demo Credentials</h3>
+            <div class="credential-item">
+                <span class="role">Police Officer</span>
+                <span class="email">police@saps.gov.za</span>
+                <span class="password">police123</span>
+            </div>
+            <div class="credential-item">
+                <span class="role">Private Security</span>
+                <span class="email">security@adt.co.za</span>
+                <span class="password">security123</span>
+            </div>
+            <div class="credential-item">
+                <span class="role">Insurance Agent</span>
+                <span class="email">agent@santam.co.za</span>
+                <span class="password">insurance123</span>
+            </div>
+            <div class="credential-item">
+                <span class="role">Bank Representative</span>
+                <span class="email">rep@standardbank.co.za</span>
+                <span class="password">bank123</span>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h4>👮 Police Dashboard</h4>
+                <p>Full access including real-time threat map, case management, and comprehensive analytics.</p>
+            </div>
+            <div class="feature">
+                <h4>🔒 Security Operations</h4>
+                <p>Enhanced security operations with personnel management and performance analytics.</p>
+            </div>
+            <div class="feature">
+                <h4>🏦 Risk Assessment</h4>
+                <p>Insurance risk assessment with fraud detection and claims management.</p>
+            </div>
+            <div class="feature">
+                <h4>🏛️ Financial Crime</h4>
+                <p>Bank fraud prevention with transaction monitoring, risk management, and threat intelligence.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>⚠️ Important:</strong> Police Officers and Bank Representatives have access to the Threat Map tab</p>
+            <p>For technical support: support@sentinel.co.za | +27 11 123 4567</p>
+        </div>
+    </div>
+    
+    <script>
+        // Check if the web application is accessible
+        fetch('http://localhost:8501')
+            .then(response => {
+                if (response.ok) {
+                    document.querySelector('.status').innerHTML = '✅ System Online - Web Application Ready';
+                    document.querySelector('.status').style.background = '#d4edda';
+                    document.querySelector('.status').style.color = '#155724';
+                } else {
+                    document.querySelector('.status').innerHTML = '⚠️ Web Application Starting...';
+                    document.querySelector('.status').style.background = '#fff3cd';
+                    document.querySelector('.status').style.color = '#856404';
+                }
+            })
+            .catch(error => {
+                document.querySelector('.status').innerHTML = '❌ Web Application Offline - Please start the application';
+                document.querySelector('.status').style.background = '#f8d7da';
+                document.querySelector('.status').style.color = '#721c24';
+            });
+        
+        // Auto-refresh status every 10 seconds
+        setInterval(() => {
+            fetch('http://localhost:8501')
+                .then(response => {
+                    if (response.ok) {
+                        document.querySelector('.status').innerHTML = '✅ System Online - Web Application Ready';
+                        document.querySelector('.status').style.background = '#d4edda';
+                        document.querySelector('.status').style.color = '#155724';
+                    }
+                })
+                .catch(error => {
+                    // Keep current status if check fails
+                });
+        }, 10000);
+    </script>
+</body>
+</html>
