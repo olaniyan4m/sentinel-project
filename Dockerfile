@@ -22,6 +22,8 @@ COPY . .
 # Create data directory
 RUN mkdir -p real_data
 
+# No database setup needed - using Firebase only
+
 # Create Streamlit config directory
 RUN mkdir -p /root/.streamlit
 
@@ -41,4 +43,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8501/_stcore/health || exit 1
 
 # Run the application
-CMD ["streamlit", "run", "sentinel_web_app_firebase.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "sentinel_web_app_firebase_only.py", "--server.port=8501", "--server.address=0.0.0.0"]
